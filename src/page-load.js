@@ -1,47 +1,82 @@
-import Image from './image.png';
+import loadHome from './load-home.js';
+import loadMenu from './load-menu.js';
+import loadAbout from './load-about.js';
 
 const content = document.getElementById("content");
 
+// function to build the nav bar
 function buildNav() {
+
+        const header = document.createElement("div");
+        const heading = document.createElement("h1");
         const navBar = document.createElement("div");
-        const intro = document.createElement("div");
-        const menu = document.createElement("div");
-        const about = document.createElement("div");
+        const homeNav = document.createElement("div");
+        const menuNav = document.createElement("div");
+        const aboutNav = document.createElement("div");
 
-
+        header.setAttribute("class", "header");
+        heading.innerHTML = "Jum's Jive & Dine";
         navBar.setAttribute("class", "nav-bar");
         navBar.setAttribute("id", "nav-bar");
-        intro.setAttribute("class", "intro");
+        homeNav.setAttribute("id", "home");
+        homeNav.setAttribute("class", "nav-selection active")
+        menuNav.setAttribute("id", "menu");
+        menuNav.setAttribute("class", "nav-selection inactive");
+        aboutNav.setAttribute("id", "about");
+        aboutNav.setAttribute("class", "nav-selection inactive");
+        homeNav.innerHTML = "HOME";
+        menuNav.innerHTML = "MENU";
+        aboutNav.innerHTML = "ABOUT";
 
-        navBar.appendChild(intro);
+        content.appendChild(header);
+        header.appendChild(heading);
+        navBar.appendChild(homeNav);
+        navBar.appendChild(menuNav);
+        navBar.appendChild(aboutNav);
 
-        content.appendChild(navBar);
+        header.appendChild(navBar);
 
-}
+        const navButtons = document.querySelectorAll(".nav-selection");
+        console.table(navButtons);
+        navButtons.forEach((navButton) => {
+                navButton.addEventListener("click", function(navButton) {
+                        console.log(navButton.target.id);
+                        switch(navButton.target.id) {
+                                case 'home': return loadHome();
+                                case 'menu': return loadMenu();
+                                case 'about': return loadAbout();
+                                default: loadHome();
+                        }
+                });
+        }); 
 
+};
+
+//function to build the main container
 function buildContainer() {
 
         
-        const heading = document.createElement("h1");
-        const image = document.createElement("img");
-        const tagline = document.createElement("p");
-
-        heading.innerHTML = "Jum's Jive & Dive";
-        image.setAttribute("alt", "Silouhette of a couple dancing.");
-        image.setAttribute("src", `${Image}`);
-        tagline.innerHTML = ("Come on down to Jum's Jive & Dive - for all your jiving (and diving) needs!");
+        
+        // div to be modified via onclick of nav items
+        const dynamicDiv = document.createElement("div");
+        dynamicDiv.setAttribute("class", "home");
+        dynamicDiv.setAttribute("id", "dynamic-div");
+        content.appendChild(dynamicDiv);
    
-        content.appendChild(heading);
-        content.appendChild(image);
-        content.appendChild(tagline);
+        loadHome();
+
 
 
 }
 
 function buildFooter() {
+        const footer = document.createElement("div");
         const copyright = document.createElement("p");
+        footer.setAttribute("class", "footer");
         copyright.innerHTML = "&copy Jum Ryan 2023"
-        content.appendChild(copyright);
+        copyright.setAttribute("class", "copyright");
+        content.appendChild(footer);
+        footer.appendChild(copyright);
 }
 
 function buildPage() {
@@ -49,7 +84,9 @@ function buildPage() {
         buildContainer();
         buildFooter();
         
-
 }
 
-export default buildPage();
+
+
+export default buildPage;
+
